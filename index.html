@@ -2,8 +2,59 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>title</title>
+    <title>CRC or not</title>
+    <link href="https://fonts.googleapis.com/css?family=Dosis|Merriweather" rel="stylesheet">
+  	<style>
+  		body {
+			font-family: 'Dosis', sans-serif;
+			font-size:2rem;
+			width:100%;
+  		}
+  		.box {
+  			float:left;
+  			padding:10px;
+  			background-color:#ddd;
+  			font-family: 'Merriweather', serif;
+  			width:500px;
+  		}
+
+  		#box1 {
+  			margin-left:50px;
+  		}
+  		#box2 {
+  			margin-left:50px;
+  			margin-right: 50px
+  		}
+  		#new {
+  			background-color: purple;
+  			color:white;
+  			width:200px;
+  			margin:auto;
+  			clear:both;
+  			text-align: center;
+  		}
+  		.actionbar {
+  			margin-top:50px;
+  			width:100%;
+  			display:inline-block;
+  		}
+  		.boxbar {
+  			margin:auto;
+  		}
+
+  		.main {
+  			width:1200px;
+  			margin:auto;
+  		}
+
+  		.responsebar{
+  			text-align: center;
+  			height: 250px;
+  		}
+
+  	</style>
   </head>
+
   <body>
   
   <script type="text/javascript">
@@ -53,6 +104,28 @@
 			answer.value=2;
 		}
 
+		document.getElementById("response-ok").style.display="none";
+		document.getElementById("response-ko").style.display="none";
+		document.getElementById("box1").style.backgroundColor="#ddd";
+		document.getElementById("box2").style.backgroundColor="#ddd";
+	}
+	function verify(){
+		console.log(this.id);
+
+		var answer = document.getElementById('answer').value;
+
+		if (document.getElementById("response-ok").style.display!="none" ||
+			document.getElementById("response-ko").style.display!="none"){
+			return;
+		}
+		if (this.id == "box"+answer){
+			document.getElementById("response-ok").style.display="block";
+
+			document.getElementById("box"+answer).style.backgroundColor="#aee8cc";
+		}else {
+			document.getElementById("response-ko").style.display="block";
+			document.getElementById(this.id).style.backgroundColor="#e8b3ae";
+		}
 
 	}
 	
@@ -61,7 +134,9 @@
 		oReq.addEventListener("load", reqListenerTF);
 		oReq.open("GET", "https://raw.githubusercontent.com/knowledgemakers/crc-or-tf/master/data/outsentences_tf.txt");
 		oReq.send();
-		
+
+		document.getElementById('box2').addEventListener('click', verify);
+		document.getElementById('box1').addEventListener('click', verify);
 
     }
 
@@ -69,10 +144,26 @@
    else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
    else window.onload = autorun;
   </script>
-  <div id="box1"></div>
-  <div id="box2"></div>
-  <input id="answer" type="hidden"/>
-
+  <div class="main">
+  
+  		<div class="responsebar" >
+  			<h1>Which one of this is a sentence from a CRC paper?</h1>
+  			<div id = "response-ok" class="response">
+		  		<h3>Correct!</h3>
+		  	</div>
+		  	<div id = "response-ko" class="response">
+		  		<h3>Wrong!</h3>
+		  	</div>
+	  	</div>
+	  <div class="boxbar">
+	  	<div id="box1" class="box"></div>
+	  	<div id="box2" class="box"></div>
+	  </div>
+	  <input id="answer" type="hidden"/>
+	  <div class="actionbar">
+	  	<div id="new" onclick="newQuiz()">New one</div>
+	  </div>
+   </div>
 
 
   </body>
