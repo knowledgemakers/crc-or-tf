@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>title</title>
+  </head>
+  <body>
+  
+  <script type="text/javascript">
+  	var sentencesCRC=[]
+  	var sentencesTF=[]
+	function reqListenerTF () {
+  		var results = this.responseText;
+
+  		sentencesTF=results.split("\n");
+  		console.log(sentencesTF.length);
+  		var oReq2 = new XMLHttpRequest();
+		oReq2.addEventListener("load", reqListenerCRC);
+		oReq2.open("GET", "https://raw.githubusercontent.com/knowledgemakers/crc-or-tf/master/data/outsentences_crc.txt");
+		oReq2.send();
+  		
+	}
+    function reqListenerCRC () {
+  		var results = this.responseText;
+  		sentencesCRC=results.split("\n");
+  		console.log(sentencesCRC.length);
+  		console.log(sentencesTF.length);
+  		if (sentencesTF.length > 0){
+  			newQuiz();
+  		}
+	}
+
+	function newQuiz(){
+		var id = Math.floor(Math.random()*sentencesCRC.length%sentencesCRC.length);
+		console.log(id);
+		var correct = sentencesCRC[id];
+		var id = Math.floor(Math.random()*sentencesTF.length%sentencesTF.length);
+		console.log(id);
+		var fake = sentencesTF[id];
+		var decide = Math.random()
+		var answer = document.getElementById('answer');
+		if (decide>0.5){
+			var div1 = document.getElementById('box1');
+			div1.innerHTML = correct;
+			var div2 = document.getElementById('box2');
+			div2.innerHTML = fake;
+			answer.value=1;
+		}else {
+			var div1 = document.getElementById('box2');
+			div1.innerHTML = correct;
+			var div2 = document.getElementById('box1');
+			div2.innerHTML = fake;
+			answer.value=2;
+		}
+
+
+	}
+	
+	function autorun(){
+    	var oReq = new XMLHttpRequest();
+		oReq.addEventListener("load", reqListenerTF);
+		oReq.open("GET", "https://raw.githubusercontent.com/knowledgemakers/crc-or-tf/master/data/outsentences_tf.txt");
+		oReq.send();
+		
+
+    }
+
+   if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
+   else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
+   else window.onload = autorun;
+  </script>
+  <div id="box1"></div>
+  <div id="box2"></div>
+  <input id="answer" type="hidden"/>
+
+
+
+  </body>
+</html>
