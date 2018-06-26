@@ -132,7 +132,7 @@
 	function autorun(){
     	var oReq = new XMLHttpRequest();
 		oReq.addEventListener("load", reqListenerTF);
-		oReq.open("GET", "https://raw.githubusercontent.com/knowledgemakers/crc-or-tf/master/data/outsentences_tf.txt");
+		oReq.open("GET", "https://raw.githubusercontent.com/knowledgemakers/crc-or-tf/master/data/outsentences_tf_spellchecked.txt");
 		oReq.send();
 
 		document.getElementById('box2').addEventListener('click', verify);
